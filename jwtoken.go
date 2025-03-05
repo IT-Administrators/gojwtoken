@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// A jwt tooken with this leading base64 encoded strin used no encryption algorithm.
+// A jwt token with this leading base64 encoded string uses no encryption algorithm.
 const unsecureTokenB64 = "eyJhbGciOiJub25lIn0"
 
 // Struct describing a jwt token.
