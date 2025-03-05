@@ -8,6 +8,9 @@ import (
 	"time"
 )
 
+// A jwt tooken with this leading base64 encoded strin used no encryption algorithm.
+const unsecureTokenB64 = "eyJhbGciOiJub25lIn0"
+
 // Struct describing a jwt token.
 type jwToken struct {
 	Typ         string `json:"typ"`
@@ -122,4 +125,9 @@ func GetJwtTokenLifeTime(token string) time.Duration {
 	}
 
 	return timeUntilExpiry
+}
+
+// Check if token is unsecure.
+func IsUnsecuredJwToken(token string) bool {
+	return strings.Contains(token, unsecureTokenB64)
 }

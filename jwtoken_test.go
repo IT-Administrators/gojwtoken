@@ -75,3 +75,13 @@ func TestGetJwtTokenLifeTime(t *testing.T) {
 		t.Errorf("Expected type %T got %T:", time.Duration.String(res), res.String())
 	}
 }
+
+func TestIsUnsecuredJwToken(t *testing.T) {
+	// Open and read file.
+	dat, err := os.ReadFile(testdir)
+	// Catch error.
+	if err != nil {
+		panic(err)
+	}
+	IsUnsecuredJwToken(string(dat))
+}
