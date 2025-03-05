@@ -21,7 +21,7 @@ type jwToken struct {
 
 // Validate jwt token. If token not valid stop execution.
 // https://tools.ietf.org/html/rfc7519
-func ValidateJwtToken(token string) bool {
+func ValidateJwToken(token string) bool {
 	// Check if tokens contains a "." or starts with "eyJ".
 	if !strings.Contains(token, ".") || !strings.HasPrefix(token, "eyJ") {
 		log.Fatal("Provided token does not contain '.' or starts with 'eyj'.")
@@ -47,7 +47,7 @@ func ValidateJwtToken(token string) bool {
 }
 
 // Get jwt token payload infos.
-func GetJwtTokenPayloadInfos(token string) jwToken {
+func GetJwTokenPayloadInfos(token string) jwToken {
 	var jwtTok jwToken
 
 	// Extract payload information.
@@ -71,9 +71,10 @@ func GetJwtTokenPayloadInfos(token string) jwToken {
 }
 
 // Get jwt token header infos.
-func GetJwtTokenHeaderInfos(token string) jwToken {
+func GetJwTokenHeaderInfos(token string) jwToken {
 	var jwtTok jwToken
 
+	// Extract header information.
 	TokenHeader := strings.Split(token, ".")[0]
 	TokenHeader = strings.Replace(strings.Replace(TokenHeader, "-", "+", -1), "_", "/", -1)
 
@@ -110,13 +111,12 @@ func GetJwtTokenLifeTime(token string) time.Duration {
 	if e != nil {
 		panic(e)
 	}
-	// Get current time.
-	now := time.Now()
-	// Convert jwt time to unix time.
-	unixTime := time.Unix(jwtTok.Exp, 0)
-	// Calculate difference between jwt time and now.
-	timeUntilExpiry = now.Sub(unixTime)
-	// Check if time is left if not raise error.
+
+	// Calculate time that is elapsed since token retrieval.
+	// timeUntilExpiry = time.Now().Sub(time.Unix(jwtTok.Exp, 0))
+	// Go recommends using time.Since for duration calculation.
+	timeUntilExpiry = time.Since(time.Unix(jwtTok.Exp, 0))
+	// Check if time is left, if not raise error.
 	if timeUntilExpiry.Minutes() > 0 {
 		log.Fatal("Token is expired.")
 	}

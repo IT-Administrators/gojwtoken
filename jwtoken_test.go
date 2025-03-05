@@ -7,10 +7,10 @@ import (
 	"time"
 )
 
-var testdir = "examples/jwttoken.txt"
+var testdir = "examples/jwtoken.txt"
 
 // Test if the provided token is valid.
-func TestValidateJWTToken(t *testing.T) {
+func TestValidateJwToken(t *testing.T) {
 	// Open and read file.
 	dat, err := os.ReadFile(testdir)
 	// Catch error.
@@ -18,7 +18,7 @@ func TestValidateJWTToken(t *testing.T) {
 		panic(err)
 	}
 
-	res := ValidateJwtToken(string(dat))
+	res := ValidateJwToken(string(dat))
 	// Parse content of file to function.
 	if res != true {
 		t.Errorf("Expected %v got %v", true, res)
@@ -26,7 +26,7 @@ func TestValidateJWTToken(t *testing.T) {
 }
 
 // Test if result of function is of type jwToken.
-func TestGetJwtTokenPayloadInfos(t *testing.T) {
+func TestGetJwTokenPayloadInfos(t *testing.T) {
 	var jtok jwToken
 
 	// Open and read file.
@@ -36,14 +36,14 @@ func TestGetJwtTokenPayloadInfos(t *testing.T) {
 		panic(err)
 	}
 
-	res := GetJwtTokenPayloadInfos(string(dat))
+	res := GetJwTokenPayloadInfos(string(dat))
 	if reflect.TypeOf(res) != reflect.TypeOf(jtok) {
 		t.Errorf("Expected type %T got %T:", jtok, res)
 	}
 }
 
 // Test if result of function is of type jwToken.
-func TestGetJwtTokenHeaderInfos(t *testing.T) {
+func TestGetJwTokenHeaderInfos(t *testing.T) {
 	var jtok jwToken
 
 	// Open and read file.
@@ -53,7 +53,7 @@ func TestGetJwtTokenHeaderInfos(t *testing.T) {
 		panic(err)
 	}
 
-	res := GetJwtTokenHeaderInfos(string(dat))
+	res := GetJwTokenHeaderInfos(string(dat))
 	if reflect.TypeOf(res) != reflect.TypeOf(jtok) {
 		t.Errorf("Expected type %T got %T:", jtok, res)
 	}
