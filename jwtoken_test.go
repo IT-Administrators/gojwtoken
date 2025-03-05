@@ -1,4 +1,4 @@
-package gojwttoken
+package gojwtoken
 
 import (
 	"os"
@@ -25,9 +25,9 @@ func TestValidateJWTToken(t *testing.T) {
 	}
 }
 
-// Test if result of function is of type jwtToken.
+// Test if result of function is of type jwToken.
 func TestGetJwtTokenPayloadInfos(t *testing.T) {
-	var jtok jwtToken
+	var jtok jwToken
 
 	// Open and read file.
 	dat, err := os.ReadFile(testdir)
@@ -42,9 +42,9 @@ func TestGetJwtTokenPayloadInfos(t *testing.T) {
 	}
 }
 
-// Test if result of function is of type jwtToken.
+// Test if result of function is of type jwToken.
 func TestGetJwtTokenHeaderInfos(t *testing.T) {
-	var jtok jwtToken
+	var jtok jwToken
 
 	// Open and read file.
 	dat, err := os.ReadFile(testdir)

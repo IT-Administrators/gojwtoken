@@ -1,4 +1,4 @@
-package gojwttoken
+package gojwtoken
 
 import (
 	b64 "encoding/base64"
@@ -9,7 +9,7 @@ import (
 )
 
 // Struct describing a jwt token.
-type jwtToken struct {
+type jwToken struct {
 	Typ         string `json:"typ"`
 	Alg         string `json:"alg"`
 	Iss         string `json:"iss"`
@@ -47,8 +47,8 @@ func ValidateJwtToken(token string) bool {
 }
 
 // Get jwt token payload infos.
-func GetJwtTokenPayloadInfos(token string) jwtToken {
-	var jwtTok jwtToken
+func GetJwtTokenPayloadInfos(token string) jwToken {
+	var jwtTok jwToken
 
 	// Extract payload information.
 	TokenPayLoad := strings.Split(token, ".")[1]
@@ -71,8 +71,8 @@ func GetJwtTokenPayloadInfos(token string) jwtToken {
 }
 
 // Get jwt token header infos.
-func GetJwtTokenHeaderInfos(token string) jwtToken {
-	var jwtTok jwtToken
+func GetJwtTokenHeaderInfos(token string) jwToken {
+	var jwtTok jwToken
 
 	TokenHeader := strings.Split(token, ".")[0]
 	TokenHeader = strings.Replace(strings.Replace(TokenHeader, "-", "+", -1), "_", "/", -1)
@@ -95,7 +95,7 @@ func GetJwtTokenHeaderInfos(token string) jwtToken {
 // Get token lifetime.
 func GetJwtTokenLifeTime(token string) time.Duration {
 	var timeUntilExpiry time.Duration
-	var jwtTok jwtToken
+	var jwtTok jwToken
 
 	TokenPayLoad := strings.Split(token, ".")[1]
 	TokenPayLoad = strings.Replace(strings.Replace(TokenPayLoad, "-", "+", -1), "_", "/", -1)
