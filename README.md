@@ -21,7 +21,7 @@ New features will be added in the future.
 
 ### Prerequisites
 
-- Golanf installed
+- Golang installed
 - Operatingsystem: Linux or Windows, not tested on mac
 - IDE like VS Code, if you want to contribute or change the code
 
