@@ -1,6 +1,6 @@
 # gojwtoken
 
-This go module handles jason web tokens.
+_This go module handles jason web tokens._
 
 ## Table of contents
 
