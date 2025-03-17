@@ -13,13 +13,12 @@ const unsecureTokenB64 = "eyJhbGciOiJub25lIn0"
 
 // Struct describing a jwt token.
 type jwToken struct {
-	Typ         string `json:"typ"`
-	Alg         string `json:"alg"`
-	Iss         string `json:"iss"`
-	Exp         int64  `json:"exp"`
-	Iat         int64  `json:"iat"`
-	Jti         string `json:"jti"`
-	AccessKeyId string `json:"accessKeyId"`
+	Typ string `json:"typ"`
+	Alg string `json:"alg"`
+	Iss string `json:"iss"`
+	Exp int64  `json:"exp"`
+	Iat int64  `json:"iat"`
+	Jti string `json:"jti"`
 }
 
 // Validate jwt token. If token not valid stop execution.
@@ -97,7 +96,7 @@ func GetJwTokenHeaderInfos(token string) jwToken {
 }
 
 // Get token lifetime.
-func GetJwtTokenLifeTime(token string) time.Duration {
+func GetJwTokenLifeTime(token string) time.Duration {
 	var timeUntilExpiry time.Duration
 	var jwtTok jwToken
 

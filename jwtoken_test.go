@@ -69,7 +69,7 @@ func TestGetJwtTokenLifeTime(t *testing.T) {
 		panic(err)
 	}
 
-	res := GetJwtTokenLifeTime(string(dat))
+	res := GetJwTokenLifeTime(string(dat))
 
 	if reflect.TypeOf(res.String()) != reflect.TypeOf(time.Duration.String(res)) {
 		t.Errorf("Expected type %T got %T:", time.Duration.String(res), res.String())
