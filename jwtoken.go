@@ -13,12 +13,16 @@ const unsecureTokenB64 = "eyJhbGciOiJub25lIn0"
 
 // Struct describing a jwt token.
 type jwToken struct {
-	Typ string `json:"typ"`
-	Alg string `json:"alg"`
-	Iss string `json:"iss"`
-	Exp int64  `json:"exp"`
-	Iat int64  `json:"iat"`
-	Jti string `json:"jti"`
+	Typ string `json:"typ"` // Type: string
+	Cty string `json:"cty"` // Content type
+	Alg string `json:"alg"` // Encryption algorithm: string
+	Iss string `json:"iss"` // Issuer: string
+	Exp int64  `json:"exp"` // Expiration time: int
+	Iat int64  `json:"iat"` // Issued at: int
+	Jti string `json:"jti"` // JWT ID: string
+	Sub string `json:"sub"` // Subject: string
+	Aud string `json:"aud"` // Audience: string
+	Nbf int    `json:"nbf"` // Not before: int
 }
 
 // Validate jwt token. If token not valid stop execution.
@@ -26,7 +30,7 @@ type jwToken struct {
 func ValidateJwToken(token string) bool {
 	// Check if tokens contains a "." or starts with "eyJ".
 	if !strings.Contains(token, ".") || !strings.HasPrefix(token, "eyJ") {
-		log.Fatal("Provided token does not contain '.' or starts with 'eyj'.")
+		log.Fatal("Provided token does not contain '.' or starts with 'eyJ'.")
 	}
 
 	i := 0
@@ -55,18 +59,18 @@ func GetJwTokenPayloadInfos(token string) jwToken {
 	// Extract payload information.
 	TokenPayLoad := strings.Split(token, ".")[1]
 	TokenPayLoad = strings.Replace(strings.Replace(TokenPayLoad, "-", "+", -1), "_", "/", -1)
+
 	// Decode b64 string.
 	sDecPayload, err := b64.StdEncoding.DecodeString(TokenPayLoad)
-
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
 	// Unmarshal json result and safe to struct.
 	e := json.Unmarshal(sDecPayload, &jwtTok)
 
 	if e != nil {
-		panic(e)
+		log.Fatal(e)
 	}
 
 	return jwtTok

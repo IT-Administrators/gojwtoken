@@ -33,7 +33,7 @@ func TestGetJwTokenPayloadInfos(t *testing.T) {
 	dat, err := os.ReadFile(testdir)
 	// Catch error.
 	if err != nil {
-		panic(err)
+		t.Error(err)
 	}
 
 	res := GetJwTokenPayloadInfos(string(dat))
