@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-// A jwt token with this leading base64 encoded string uses no encryption algorithm.
+// A jwtoken with this leading base64 encoded string uses no encryption algorithm.
 const unsecureTokenB64 = "eyJhbGciOiJub25lIn0"
 
-// Struct describing a jwt token.
+// Struct describing a jwtoken.
 type jwToken struct {
 	Typ string `json:"typ"` // Type: string
 	Cty string `json:"cty"` // Content type
@@ -27,12 +27,14 @@ type jwToken struct {
 
 // Validate jwt token. If token not valid stop execution.
 // https://tools.ietf.org/html/rfc7519
-func ValidateJwToken(token string) bool {
+func ValidateJwToken(token string) (bool, []string) {
 	// Check if tokens contains a "." or starts with "eyJ".
 	if !strings.Contains(token, ".") || !strings.HasPrefix(token, "eyJ") {
 		log.Fatal("Provided token does not contain '.' or starts with 'eyJ'.")
+		// return false, nil
 	}
-
+	// Save all parts of the token (Header, Payload).
+	var tokenParts []string
 	i := 0
 	for i < 2 {
 		// Split token into parts and return token on position i.
@@ -45,30 +47,28 @@ func ValidateJwToken(token string) bool {
 		case 3:
 			Token += "="
 		}
+		tokenParts = append(tokenParts, Token)
 		// Advance by 1.
 		i++
 	}
 	// Return true if token is valid.
-	return true
+	return true, tokenParts
 }
 
 // Get jwt token payload infos.
 func GetJwTokenPayloadInfos(token string) jwToken {
 	var jwtTok jwToken
 
-	// Extract payload information.
-	TokenPayLoad := strings.Split(token, ".")[1]
-	TokenPayLoad = strings.Replace(strings.Replace(TokenPayLoad, "-", "+", -1), "_", "/", -1)
+	_, tokens := ValidateJwToken(token)
 
 	// Decode b64 string.
-	sDecPayload, err := b64.StdEncoding.DecodeString(TokenPayLoad)
+	sDecPayload, err := b64.StdEncoding.DecodeString(tokens[1])
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Unmarshal json result and safe to struct.
 	e := json.Unmarshal(sDecPayload, &jwtTok)
-
 	if e != nil {
 		log.Fatal(e)
 	}
@@ -80,18 +80,14 @@ func GetJwTokenPayloadInfos(token string) jwToken {
 func GetJwTokenHeaderInfos(token string) jwToken {
 	var jwtTok jwToken
 
-	// Extract header information.
-	TokenHeader := strings.Split(token, ".")[0]
-	TokenHeader = strings.Replace(strings.Replace(TokenHeader, "-", "+", -1), "_", "/", -1)
+	_, tokens := ValidateJwToken(token)
 
-	sDecHeader, err := b64.StdEncoding.DecodeString(TokenHeader)
-
+	sDecHeader, err := b64.StdEncoding.DecodeString(tokens[0])
 	if err != nil {
 		panic(err)
 	}
 
 	e := json.Unmarshal(sDecHeader, &jwtTok)
-
 	if e != nil {
 		panic(e)
 	}
@@ -104,16 +100,14 @@ func GetJwTokenLifeTime(token string) time.Duration {
 	var timeUntilExpiry time.Duration
 	var jwtTok jwToken
 
-	TokenPayLoad := strings.Split(token, ".")[1]
-	TokenPayLoad = strings.Replace(strings.Replace(TokenPayLoad, "-", "+", -1), "_", "/", -1)
+	_, tokens := ValidateJwToken(token)
 
-	sDecPayload, err := b64.StdEncoding.DecodeString(TokenPayLoad)
-
+	sDecPayload, err := b64.StdEncoding.DecodeString(tokens[1])
 	if err != nil {
 		log.Fatal(err)
 	}
-	e := json.Unmarshal(sDecPayload, &jwtTok)
 
+	e := json.Unmarshal(sDecPayload, &jwtTok)
 	if e != nil {
 		panic(e)
 	}

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-var testdir = "examples/jwtoken.txt"
+var testdir = "examples/jwtoken02"
 
 // Test if the provided token is valid.
 func TestValidateJwToken(t *testing.T) {
@@ -18,8 +18,7 @@ func TestValidateJwToken(t *testing.T) {
 		panic(err)
 	}
 
-	res := ValidateJwToken(string(dat))
-	// Parse content of file to function.
+	res, _ := ValidateJwToken(string(dat))
 	if res != true {
 		t.Errorf("Expected %v got %v", true, res)
 	}
@@ -70,7 +69,6 @@ func TestGetJwtTokenLifeTime(t *testing.T) {
 	}
 
 	res := GetJwTokenLifeTime(string(dat))
-
 	if reflect.TypeOf(res.String()) != reflect.TypeOf(time.Duration.String(res)) {
 		t.Errorf("Expected type %T got %T:", time.Duration.String(res), res.String())
 	}
